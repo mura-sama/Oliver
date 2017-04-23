@@ -1,0 +1,13 @@
+{
+    "elements": {
+        "jsp:setProperty": {},
+        "title": {},
+        "jsp:useBean": {}
+    },
+    "attributes": {
+        "charset": {},
+        "name": {
+            "context": "meta"
+        }
+    }
+}
