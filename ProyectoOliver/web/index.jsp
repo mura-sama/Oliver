@@ -1,4 +1,6 @@
+<%@page import="Clases.ConexionDB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <!doctype html>
 <html>
@@ -10,7 +12,9 @@
     div#Principal{overflow: hidden;}
     div#Informacion,div#Calendario{display: inline-block;}
 </style>
-<%! %>
+<%
+    ConexionDB a=new ConexionDB();
+%>
 </head>
 <body>
 <header id="a">
@@ -38,7 +42,7 @@
         </div>
             
             <div id="Principal">
-                 <div id="Informacion" align="left">
+                 <td id="Informacion" align="left">
                      <table width="400" border="0">
                 <tbody>
                     <tr>
@@ -49,9 +53,9 @@
                         <td>E-mail registrado:</td>
                         <td>&nbsp;</td>
                     </tr>
-      </tbody>
-                </div>
-                <div id="Calendario" align="right"><script language="JavaScript" type="text/javascript">
+                </tbody>
+                </td>
+                <td id="Calendario" align="right"><script language="JavaScript" type="text/javascript">
                 //<![CDATA[
 
                 <!-- Begin
@@ -161,7 +165,7 @@
                 // End -->
                 //]]>
                 </script>
-                </div>
+                </td>
         </div>
     </main>
 </body>
