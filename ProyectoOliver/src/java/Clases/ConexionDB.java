@@ -14,10 +14,19 @@ public class ConexionDB {
             Class.forName("com.mysql.jdbc.Driver");
             String URL="jdbc:mysql://"+ip+"/"+db+"?"+"user="+usuario+"&password="+passwd;
             a=DriverManager.getConnection(URL);
+            System.out.println("Ok");
         }
         catch (SQLException e){
             System.out.println(e);
         }
         return a;
+    }
+    
+    public ResultSet select(String query) throws SQLException, ClassNotFoundException{
+        ConexionDB a=new ConexionDB();
+        Connection b=a.Conectar();
+        Statement c=b.createStatement();
+        ResultSet d=c.executeQuery(query);
+        return d;
     }
 }

@@ -1,4 +1,4 @@
-<%@page import="Clases.ConexionDB"%>
+<%@page import="Clases.ConexionDB, java.sql.*" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -14,6 +14,11 @@
 </style>
 <%
     ConexionDB a=new ConexionDB();
+    ResultSet b=a.select("Select * from usuarios");
+    while(b.next()){
+        out.println(b.getInt(1)+"-"+b.getString(2)+" | "+b.getString(3)+" "+b.getString(4)+" "+b.getString(5));
+    }
+   
 %>
 </head>
 <body>
