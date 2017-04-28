@@ -22,7 +22,7 @@ public class ConexionDB {
         return a;
     }
     
-    public ResultSet select(String query) throws SQLException, ClassNotFoundException{
+    public ResultSet query(String query) throws SQLException, ClassNotFoundException{
         ConexionDB a=new ConexionDB();
         Connection b=a.Conectar();
         Statement c=b.createStatement();

@@ -7,19 +7,18 @@
 <head>
 <meta charset="utf-8">
 <title>ProyectoOliver</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.15/af-2.2.0/r-2.1.1/rr-1.2.0/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.15/af-2.2.0/r-2.1.1/rr-1.2.0/datatables.min.js"></script>
+<link rel="stylesheet" href="estilos.css">
 <style type="text/css">
-    header#a{overflow: hidden;}
-    div#Principal{overflow: hidden;}
-    div#Informacion,div#Calendario{display: inline-block;}
-</style>
-<%
-    ConexionDB a=new ConexionDB();
-    ResultSet b=a.select("Select * from usuarios");
-    while(b.next()){
-        out.println(b.getInt(1)+"-"+b.getString(2)+" | "+b.getString(3)+" "+b.getString(4)+" "+b.getString(5));
+    #Informacion{
+        float: left;
     }
-   
-%>
+    #Calendario{
+        float: right;
+    }
+</style>
 </head>
 <body>
 <header id="a">
@@ -47,8 +46,8 @@
         </div>
             
             <div id="Principal">
-                 <td id="Informacion" align="left">
-                     <table width="400" border="0">
+                 <dv id="Informacion" align="left">
+                     <table width="400" border="1">
                 <tbody>
                     <tr>
                         <td>Rut Usuario:</td>
@@ -60,7 +59,7 @@
                     </tr>
                 </tbody>
                 </td>
-                <td id="Calendario" align="right"><script language="JavaScript" type="text/javascript">
+                <dv id="Calendario" align="right"><script language="JavaScript" type="text/javascript">
                 //<![CDATA[
 
                 <!-- Begin
@@ -175,7 +174,69 @@
     </main>
 </body>
 <footer>
-    
+    <table id="resumen" class="display">
+<thead>        
+        <tr>
+            <th align="center">ID</th>
+            <th align="center">Nombre Proyecto</th>
+            <th align="center">Descripción</th>
+            <th align="center">Peso Actores</th>
+            <th align="center">Peso Casos</th>
+            <th align="center">UUCP</th>
+            <th align="center">Peso FTecnico</th>
+            <th align="center">Peso FAmbiental</th>
+            <th align="center">UCP</th>
+            <th align="center">E Esfuerzo</th>
+        </tr>
+</thead>
+<tbody>
+        <%! 
+            private static Connection a=null;
+            private static String ip="170.239.84.83:3306";
+            private static String db="solemne1";
+            private static String usuario="root";
+            private static String passwd="urob68tk";
+        %>
+        <%
+            try{
+            Class.forName("com.mysql.jdbc.Driver");
+            String URL="jdbc:mysql://"+ip+"/"+db+"?"+"user="+usuario+"&password="+passwd;
+            a=DriverManager.getConnection(URL);
+            Statement x1=a.createStatement();
+            ResultSet b=x1.executeQuery("Select Project_id,nombre,descripcion from proyectos");
+            Statement x2=a.createStatement();
+            ResultSet c=x2.executeQuery("Select project_id,sum(valor) as a from actoresp group by project_id");
+            Statement x3=a.createStatement();
+            ResultSet d=x3.executeQuery("Select project_id,sum(valor) from casosp group by project_id");
+            Statement x4=a.createStatement();
+            ResultSet e=x4.executeQuery("Select project_id,sum(factor) from ftecnicop group by project_id");
+            Statement x5=a.createStatement();
+            ResultSet f=x5.executeQuery("Select project_id,sum(factor) from fambientalp group by project_id");
+            while(b.next()&&c.next()&&d.next()&&e.next()&&f.next()){
+                out.println("<tr>");
+                out.println("<td>"+b.getInt(1)+"</td>");
+                out.println("<td>"+b.getString(2)+"</td>");
+                out.println("<td>"+b.getString(3)+"</td>");
+                out.println("<td>"+c.getString(2)+"</td>");
+                out.println("<td>"+d.getInt(2)+"</td>");
+                out.println("<td>"+c.getInt(2)+d.getInt(2)+"</td>");
+                out.println("<td>"+e.getInt(2)+"</td>");
+                out.println("<td>"+f.getInt(2)+"</td>");
+                out.println("<td>"+(c.getInt(2)+d.getInt(2))*e.getInt(2)*f.getInt(2)+"</td>");
+                out.println("</tr>");
+            }
+        }
+        catch (SQLException e){
+            System.out.println(e);
+        }
+    %>
+        </tbody>
+    </table>
 </footer>
+        <script type="text/javascript">
+        $(document).ready(function(){
+            $('#resumen').DataTable();
+            });
+    </script>
 </html>
 
