@@ -3,15 +3,15 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Login Oliver</title>
     </head>
     <body>
-        <header align="center">
+        <header>
             <div align="center"><img src="imagenes/1.png" alt=""/></div>
             <div align="center"><h1>Sistema gestion de proyecto Oliver</h1></div>
         </header>
         <main>
-            <form name="login" method="post" action="valida">
+            <form name="login" method="post" action="validar">
             <table width="290" border="0" cellspacing="0" cellpadding="1" align="center">
                 <tr bgcolor="#990033" align="center">
                 <td><b><font color="#FFFFFF">Login</font></b></td>

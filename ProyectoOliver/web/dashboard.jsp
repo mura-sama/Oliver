@@ -202,28 +202,13 @@
         </tr>
 </thead>
 <tbody>
-        <%! 
-            private static Connection a=null;
-            private static String ip="170.239.84.83:3306";
-            private static String db="solemne1";
-            private static String usuario="root";
-            private static String passwd="urob68tk";
-        %>
         <%
             try{
-            Class.forName("com.mysql.jdbc.Driver");
-            String URL="jdbc:mysql://"+ip+"/"+db+"?"+"user="+usuario+"&password="+passwd;
-            a=DriverManager.getConnection(URL);
-            Statement x1=a.createStatement();
-            ResultSet b=x1.executeQuery("Select Project_id,nombre,descripcion from proyectos");
-            Statement x2=a.createStatement();
-            ResultSet c=x2.executeQuery("Select project_id,sum(valor) as a from actoresp group by project_id");
-            Statement x3=a.createStatement();
-            ResultSet d=x3.executeQuery("Select project_id,sum(valor) from casosp group by project_id");
-            Statement x4=a.createStatement();
-            ResultSet e=x4.executeQuery("Select project_id,sum(factor) from ftecnicop group by project_id");
-            Statement x5=a.createStatement();
-            ResultSet f=x5.executeQuery("Select project_id,sum(factor) from fambientalp group by project_id");
+            ResultSet b=ConexionDB.query("Select Project_id,nombre,descripcion from proyectos");
+            ResultSet c=ConexionDB.query("Select project_id,sum(valor) as a from actoresp group by project_id");
+            ResultSet d=ConexionDB.query("Select project_id,sum(valor) from casosp group by project_id");
+            ResultSet e=ConexionDB.query("Select project_id,sum(factor) from ftecnicop group by project_id");
+            ResultSet f=ConexionDB.query("Select project_id,sum(factor) from fambientalp group by project_id");
             while(b.next()&&c.next()&&d.next()&&e.next()&&f.next()){
                 out.println("<tr>");
                 out.println("<td>"+b.getInt(1)+"</td>");
@@ -245,7 +230,7 @@
         </tbody>
     </table>
         <div align="right">
-            <input type="submit" value="Nuevo Proyecto" name="Nuevo Proyecto" onclick="location='WEB-INF/nuevo_proyecto.jsp'"/>
+            <input type="submit" value="Nuevo Proyecto" name="Nuevo Proyecto" onclick="location='nuevo_proyecto.jsp'"/>
         </div>
 </footer>
         <script type="text/javascript">
