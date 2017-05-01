@@ -44,4 +44,28 @@ public class ConexionDB {
         String nombre=j.getString(1)+" "+j.getString(2);
         return nombre;
     }
+    
+    public static String Omail(String a, String b) throws SQLException, ClassNotFoundException{
+        String consulta="select email from usuarios where rut='"+a+"' and dv='"+b+"'";
+        ResultSet mail = query(consulta);
+        mail.first();
+        String resultado = mail.getString(1);
+        return resultado;
+    }
+    
+    public static int Cproyectos(String a, String b) throws SQLException, ClassNotFoundException{
+        String consulta="select count(project_id) from proyectos where jp='"+a+"' and jp_dv='"+b+"'";
+        ResultSet proyectos = query(consulta);
+        proyectos.first();
+        int resultado = proyectos.getInt(1);
+        return resultado;
+    }
+    
+    public static String MaxAct(String a, String b) throws SQLException, ClassNotFoundException{
+        String consulta="select y.Project_ID, y.nombre, max(a) from (select Project_ID as id, sum(valor) as a from actoresp group by Project_ID) x inner join proyectos y on x.id=y.Project_ID where y.jp='"+a+"' and y.jp_dv='"+b+"'";
+        ResultSet max = query(consulta);
+        max.first();
+        String resultado = Integer.toString(max.getInt(1))+" = "+max.getString(2);
+        return resultado;
+    }
 }

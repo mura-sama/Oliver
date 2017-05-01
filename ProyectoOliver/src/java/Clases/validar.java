@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 
 public class validar extends HttpServlet {
 
@@ -22,12 +23,12 @@ public class validar extends HttpServlet {
         a = request.getParameter("rut");
         b = request.getParameter("dv");
         c = request.getParameter("passwd");
+        RequestDispatcher d=getServletContext().getRequestDispatcher("/dashboard.jsp");
+     
         int ok=ConexionDB.Cusuario(a, b, c);
         if(ok==1){
             sesion.setAttribute("usuario", a);
-            request.getSession().setAttribute("u", a);
-            response.sendRedirect("dashboard.jsp");
-            request.getRequestDispatcher("dashboard.jsp").forward(request, response);
+            d.forward(request, response);
         }
         else if(ok==0){
             PrintWriter out = response.getWriter();

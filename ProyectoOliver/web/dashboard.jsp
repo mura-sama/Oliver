@@ -13,14 +13,19 @@
 <link rel="stylesheet" href="estilos.css">
 <jsp:declaration>
     String user;
+    String dv;
     String nombre;
+    String mail;
+    String maxA;
+    int proyectos;
 </jsp:declaration>
 <jsp:scriptlet>
-    user=(String)session.getAttribute("u");
-    try{
-    nombre=ConexionDB.Nusuario(user);}
-    catch(SQLException nombre){
-    }
+    user=(String)request.getParameter("rut");
+    dv=(String)request.getParameter("dv");
+    mail = ConexionDB.Omail(user, dv);
+    nombre=ConexionDB.Nusuario(user);
+    proyectos=ConexionDB.Cproyectos(user, dv);
+    maxA=ConexionDB.MaxAct(user, dv);
 </jsp:scriptlet>
 </head>
 <body>
@@ -33,7 +38,7 @@
                             <div id="logo" align="left"><img src="imagenes/1.png" width="50" height="35" alt=""/> <label>Oliver</label></div>
                         </td>
                         <td align="right">
-                            <div align="right"><h2>Bienvenido <%=nombre%></h2></div>
+                            <div align="right"><label>Bienvenido <%=nombre%></label></div>
                         </td>
                     </tr>
                 </tbody>
@@ -68,21 +73,24 @@
                                                     <tbody>
                                                          <tr>
                                                             <td>Rut Usuario:</td>
-                                                            <td>&nbsp;</td>
+                                                            <td><%=user%> - <%=dv%></td>
                                                         </tr>
                                                         <tr>
                                                             <td>E-mail registrado:</td>
-                                                            <td>&nbsp;</td>
+                                                            <td><%=mail%></td>
                                                        </tr>
                                                            <tr>
                                                                <td>Total de proyectos:</td>
-                                                               <td></td>
+                                                               <td><%=proyectos%></td>
                                                             </tr>
                                                                 <tr>
-                                                                    <td>Proyectos complicados:</td>
+                                                                    <td>Proyecto con mayor peso actores</td>
                                                                     <td></td>
                                                             </tr>
-                                                            
+                                                            <tr>
+                                                                    <td>Proyecto con mayor peso casos uso</td>
+                                                                    <td></td>
+                                                            </tr>                                         
                                                     </tbody>
                                                 </table>
                                         </td>
