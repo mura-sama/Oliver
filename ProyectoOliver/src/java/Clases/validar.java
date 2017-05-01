@@ -25,13 +25,15 @@ public class validar extends HttpServlet {
         int ok=ConexionDB.Cusuario(a, b, c);
         if(ok==1){
             sesion.setAttribute("usuario", a);
+            request.getSession().setAttribute("u", a);
             response.sendRedirect("dashboard.jsp");
+            request.getRequestDispatcher("dashboard.jsp").forward(request, response);
         }
         else if(ok==0){
             PrintWriter out = response.getWriter();
             response.setContentType("text/html");
             out.println("<script type=\"text/javascript\">");
-            out.println("if(!alert(\"Usuario y/o contraseña invalidos\")) document.location ='http://localhost:9080/ProyectoOliver/'");
+            out.println("if(!alert(\"Usuario y/o Contraseña invalida\")) document.location ='http://localhost:9080/ProyectoOliver/'");
             out.println("</script>");
         }
         }
@@ -55,6 +57,9 @@ public class validar extends HttpServlet {
             processRequest(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(validar.class.getName()).log(Level.SEVERE, null, ex);
+            PrintWriter out =  response.getWriter();
+            response.setContentType("text/html");
+            out.println(ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(validar.class.getName()).log(Level.SEVERE, null, ex);
         }

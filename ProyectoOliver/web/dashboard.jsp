@@ -11,12 +11,33 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.15/af-2.2.0/r-2.1.1/rr-1.2.0/datatables.min.css"/>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.15/af-2.2.0/r-2.1.1/rr-1.2.0/datatables.min.js"></script>
 <link rel="stylesheet" href="estilos.css">
+<jsp:declaration>
+    String user;
+    String nombre;
+</jsp:declaration>
+<jsp:scriptlet>
+    user=(String)session.getAttribute("u");
+    try{
+    nombre=ConexionDB.Nusuario(user);}
+    catch(SQLException nombre){
+    }
+</jsp:scriptlet>
 </head>
 <body>
 <header id="a">
 	<h1>
-            <div id="logo"><img src="imagenes/1.png" width="50" height="35" alt=""/> 
-            <label>Oliver</label></div>
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td align="left">
+                            <div id="logo" align="left"><img src="imagenes/1.png" width="50" height="35" alt=""/> <label>Oliver</label></div>
+                        </td>
+                        <td align="right">
+                            <div align="right"><h2>Bienvenido <%=nombre%></h2></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 	</h1>
 </header>
     <main>

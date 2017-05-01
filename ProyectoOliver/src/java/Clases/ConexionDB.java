@@ -29,15 +29,19 @@ public class ConexionDB {
         return d;
     }
     
-    public static int Cusuario(String b, String c, String d) throws SQLException, ClassNotFoundException{
-        int x=5;
-        ResultSet z=query("select rut,dv,password from usuarios where rut="+b+" and dv="+c+" and password="+d);
-        z.first();
-        if(b.equals(z.getInt(1))){
-                x=1;
-        }else{
-            x=0;
+    public static int Cusuario(String a, String b, String c) throws SQLException, ClassNotFoundException{
+        int x=0;
+        ResultSet z=query("select rut,dv,password from usuarios where rut='"+a+"' and dv='"+b+"' and password='"+c+"'");
+        if(z.absolute(1)){
+            x=1;
         }
         return x;
+    }
+    
+    public static String Nusuario(String rut) throws SQLException, ClassNotFoundException{
+        ResultSet j=query("select nombre,apellido_p from usuarios where rut="+rut);
+        j.first();
+        String nombre=j.getString(1)+" "+j.getString(2);
+        return nombre;
     }
 }
