@@ -17,6 +17,7 @@
     String nombre;
     String mail;
     String maxA;
+    String maxC;
     int proyectos;
 </jsp:declaration>
 <jsp:scriptlet>
@@ -26,6 +27,12 @@
     nombre=ConexionDB.Nusuario(user);
     proyectos=ConexionDB.Cproyectos(user, dv);
     maxA=ConexionDB.MaxAct(user, dv);
+    maxC=ConexionDB.MaxCU(user, dv);
+    ResultSet b=ConexionDB.query("Select Project_id,nombre,descripcion from proyectos where jp='"+user+"' and jp_dv='"+dv+"'");
+    ResultSet c=ConexionDB.query("Select a.project_id,sum(a.valor) from actoresp a inner join proyectos b on a.project_id=b.project_id where b.jp='"+user+"' and b.jp_dv='"+dv+"' group by a.project_id");
+    ResultSet d=ConexionDB.query("Select a.project_id,sum(a.valor) from casosp a inner join proyectos b on a.project_id=b.project_id where b.jp='"+user+"' and b.jp_dv='"+dv+"' group by a.project_id");
+    ResultSet e=ConexionDB.query("select b.project_id,sum(x) from (Select a.peso*b.factor as x,b.Project_ID as y from ftecnico a inner join ftecnicop b on a.IDFT=b.IDFT) a inner join proyectos b on a.y=b.Project_ID where b.jp='"+user+"' and b.jp_dv='"+dv+"' group by a.y");
+    ResultSet f=ConexionDB.query("select b.project_id,sum(x) from (Select a.peso*b.factor as x,b.Project_ID as y from fambiental a inner join fambientalp b on a.IDFA=b.IDFA) a inner join proyectos b on a.y=b.Project_ID where b.jp='"+user+"' and b.jp_dv='"+dv+"' group by a.y");
 </jsp:scriptlet>
 </head>
 <body>
@@ -65,11 +72,14 @@
             
             <div>
                 <table border="0" width="100%">
-                        <tbody>
+                    <tbody>
                                 <tr>
                                         <td align="left" valign="top">
                                             <dv id="Informacion" align="left" valign="top">
                                                  <table width="400" border="1">
+                                                     <thead width="100%">
+                                                     <caption><strong>Estadísticas</strong></caption>
+                                                    </thead>    
                                                     <tbody>
                                                          <tr>
                                                             <td>Rut Usuario:</td>
@@ -85,11 +95,11 @@
                                                             </tr>
                                                                 <tr>
                                                                     <td>Proyecto con mayor peso actores</td>
-                                                                    <td></td>
+                                                                    <td>ID <%=maxA%></td>
                                                             </tr>
                                                             <tr>
                                                                     <td>Proyecto con mayor peso casos uso</td>
-                                                                    <td></td>
+                                                                    <td>ID <%=maxC%></td>
                                                             </tr>                                         
                                                     </tbody>
                                                 </table>
@@ -231,31 +241,26 @@
         </tr>
 </thead>
 <tbody>
-        <%
-            try{
-            ResultSet b=ConexionDB.query("Select Project_id,nombre,descripcion from proyectos");
-            ResultSet c=ConexionDB.query("Select project_id,sum(valor) as a from actoresp group by project_id");
-            ResultSet d=ConexionDB.query("Select project_id,sum(valor) from casosp group by project_id");
-            ResultSet e=ConexionDB.query("Select project_id,sum(factor) from ftecnicop group by project_id");
-            ResultSet f=ConexionDB.query("Select project_id,sum(factor) from fambientalp group by project_id");
+        <%           
             while(b.next()&&c.next()&&d.next()&&e.next()&&f.next()){
+                int uucp=Integer.parseInt(c.getString(2))+Integer.parseInt(d.getString(2));
+                double tcf=0.6+(0.01*e.getFloat(2));
+                double ef=1.4+(-0.03*f.getFloat(2));
+                double ucp=uucp*tcf*ef;
+                int pid=b.getInt(1);
                 out.println("<tr>");
-                out.println("<td>"+b.getInt(1)+"</td>");
+                out.println("<td><a href=reporte_proyecto.jsp?pid="+pid+">"+pid+"</a></td>");
                 out.println("<td>"+b.getString(2)+"</td>");
                 out.println("<td>"+b.getString(3)+"</td>");
                 out.println("<td>"+c.getString(2)+"</td>");
                 out.println("<td>"+d.getInt(2)+"</td>");
-                out.println("<td>"+c.getInt(2)+d.getInt(2)+"</td>");
-                out.println("<td>"+e.getInt(2)+"</td>");
-                out.println("<td>"+f.getInt(2)+"</td>");
-                out.println("<td>"+(c.getInt(2)+d.getInt(2))*e.getInt(2)*f.getInt(2)+"</td>");
+                out.println("<td>"+uucp+"</td>");
+                out.println("<td>"+tcf+"</td>");
+                out.println("<td>"+ef+"</td>");
+                out.println("<td>"+ucp+"</td>");
                 out.println("</tr>");
             }
-        }
-        catch (SQLException e){
-            System.out.println(e);
-        }
-    %>
+        %>
         </tbody>
     </table>
         <div align="right">

@@ -68,4 +68,12 @@ public class ConexionDB {
         String resultado = Integer.toString(max.getInt(1))+" = "+max.getString(2);
         return resultado;
     }
+    
+    public static String MaxCU(String a, String b) throws SQLException, ClassNotFoundException{
+        String consulta="select y.Project_ID, y.nombre, max(a) from (select Project_ID as id, sum(valor) as a from casosp group by Project_ID) x inner join proyectos y on x.id=y.Project_ID where y.jp='"+a+"' and y.jp_dv='"+b+"'";
+        ResultSet max = query(consulta);
+        max.first();
+        String resultado = Integer.toString(max.getInt(1))+" = "+max.getString(2);
+        return resultado;
+    }
 }
