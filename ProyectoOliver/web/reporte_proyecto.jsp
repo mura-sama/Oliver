@@ -10,6 +10,13 @@
     String pid;
     ResultSet nproyecto;
     ResultSet actores;
+    ResultSet casos;
+    ResultSet ftecnicos;
+    ResultSet fambientales;
+    int tact=0;
+    int tcus=0;
+    float tft=0;
+    float tfa=0;
 %>
     
 <jsp:scriptlet>
@@ -20,16 +27,19 @@
     String nomp = nproyecto.getString(1);
     
     actores=ConexionDB.query("select actor,complejidad,valor from actoresp where project_id='"+pid+"'");
+    casos=ConexionDB.query("select caso,complejidad,valor from casosp where project_id='"+pid+"'");
+    ftecnicos=ConexionDB.query("select a.idft,a.descripcion,a.peso,b.factor from ftecnico a inner join ftecnicop b on a.idft=b.idft where b.project_id='"+pid+"'");
+    fambientales=ConexionDB.query("select a.idfa,a.descripcion,a.peso,b.factor from fambiental a inner join fambientalp b on a.idfa=b.idfa where b.project_id='"+pid+"'");
 </jsp:scriptlet>
 </head>
  
 <body>
     <h1>Proyecto: <%=nomp%> </h1>
     
-    <table width="100%" border="0">
+    <table width="100%" border="0" cellspacing="20">
         <tbody>
             <tr>
-                <td>
+                <td valign="top">
                     <table id="actores" width="100%" border="1">
                         <caption><strong>Actores</strong></caption>
                         <thead>
@@ -45,314 +55,107 @@
                                     out.println("<td>"+actores.getString(2)+"</td>");
                                     out.println("<td>"+actores.getInt(3)+"</td>");
                                     out.println("</tr>");
+                                    tact=tact+actores.getInt(3);
                                 }
                             %>
                         </tbody>
+                        <tfoot>
+                        <td align="right" colspan="2">Total valor actores:</td>
+                        <td align="left"><%=tact%></td>
+                        </tfoot>
                     </table>
                 </td>
-                <td>
-                    <table id='casos' width='100%' border='1'>
+                <td valign="top">
+                    <table id='casos' width='100%' border='1' valign="top">
                         <caption><strong>Casos de Uso</strong></caption>
+                        <thead>
+                        <th align="center">Caso Uso</th>
+                        <th align="center">Complejidad</th>
+                        <th align="center">Peso</th>
+                        </thead>
+                        <tbody>
+                            <%
+                                while(casos.next()){
+                                    out.println("<tr>");
+                                    out.println("<td>"+casos.getString(1)+"</td>");
+                                    out.println("<td>"+casos.getString(2)+"</td>");
+                                    out.println("<td>"+casos.getInt(3)+"</td>");
+                                    out.println("</tr>");
+                                    tcus=tcus+casos.getInt(3);
+                                }
+                             %>
+                        </tbody>
+                        <tfoot>
+                        <td align="right" colspan="2">Total valor casos uso:</td>
+                        <td align="left"><%=tcus%></td>
+                        </tfoot>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <br></br>
+                    <table id="ftecnicos" width="100%" border="1">
+                        <caption><strong>Factores Tecnicos</strong></caption>
+                        <thead>
+                            <th align="center">ID Factor</th>
+                            <th align="center">Descripcion</th>
+                            <th align="center">Peso</th>
+                            <th align="center">Factor</th>
+                            <th align="center">Valor Ponderado</th>
+                        </thead>
+                        <tbody>
+                            <%
+                                while(ftecnicos.next()){
+                                    out.println("<tr>");
+                                    out.println("<td>"+ftecnicos.getInt(1)+"</td>");
+                                    out.println("<td>"+ftecnicos.getString(2)+"</td>");
+                                    out.println("<td>"+ftecnicos.getFloat(3)+"</td>");
+                                    out.println("<td>"+ftecnicos.getInt(4)+"</td>");
+                                    out.println("<td>"+(ftecnicos.getFloat(3)*ftecnicos.getInt(4))+"</td>");
+                                    tft=tft+(ftecnicos.getFloat(3)*ftecnicos.getInt(4));
+                                }
+                            %>
+                        </tbody>
+                        <tfoot>
+                        <td align="right" colspan="4">Total ponderacion F tecnicos:</td>
+                        <td align="left"><%=tft%></td>
+                        </tfoot>
+                    </table>
+                </td>
+                <td valign="top">
+                    <br></br>
+                    <table id="fambientales" width="100%" border="1">
+                        <caption><strong>Factores Ambientales</strong></caption>
+                        <thead>
+                            <th align="center">ID Factor</th>
+                            <th align="center">Descripcion</th>
+                            <th align="center">Peso</th>
+                            <th align="center">Factor</th>
+                            <th align="center">Valor Ponderado</th>
+                        </thead>
+                        <tbody>
+                            <%
+                                while(fambientales.next()){
+                                    out.println("<tr>");
+                                    out.println("<td>"+fambientales.getInt(1)+"</td>");
+                                    out.println("<td>"+fambientales.getString(2)+"</td>");
+                                    out.println("<td>"+fambientales.getFloat(3)+"</td>");
+                                    out.println("<td>"+fambientales.getInt(4)+"</td>");
+                                    out.println("<td>"+(fambientales.getFloat(3)*fambientales.getInt(4))+"</td>");
+                                    tfa=tfa+(fambientales.getFloat(3)*fambientales.getInt(4));
+                                }
+                            %>
+                        </tbody>
+                        <tfoot>
+                        <td align="right" colspan="4">Total ponderacion F tecnicos:</td>
+                        <td align="left"><%=tfa%></td>
+                        </tfoot>
                     </table>
                 </td>
             </tr>
         </tbody>
     </table>
- 
-<table width="50%" height="50%" border=0 bordercolor=""align="left" cellpadding=10 cellspacing=10
- >
-<tr><td  border-collapse:separate;
-  border-spacing: 2px 6px;
-width="233"><table  border-collapse:separate;
-  border-spacing: 100px 100px;  align="center" border=1 cellspacing=1 cellpadding=1 width="100%">
-<tr><caption>
-<strong>Actores</strong>
-</caption>
-   <thead>
-   
-      <th>Actor</th>
-      <th>Peso</th>
-   <tbody>
-       <tr>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <td>&nbsp;</td>
-         <td>&nbsp;</td>
-       </tr>
-       <tr>
-         <td>&nbsp;</td>
-         <td>&nbsp;</td>
-       </tr>
-       <tr>
-         <td>&nbsp;</td>
-         <td>&nbsp;</td>
-       </tr>
-       <tr>
-         <td>&nbsp;</td>
-         <td>&nbsp;</td>
-       </tr>
-       <tr>
-         <td>&nbsp;</td>
-         <td>&nbsp;</td>
-       </tr>
-     </tbody>
-      <tfoot>
-    <tr>
-      <td>Total</td>
-      <td></td>
-    </tr>
-  </tfoot>
-  </table></td></tr></table></td>
-  
-<table  width="50%" height="50%" border=0 bordercolor=""align="left" cellpadding=10 cellspacing=10> 
-<tr>
-    <td   border-collapse:separate;
-  border-spacing: 2px 6px;width="100"><table border-collapse:separate;
-  border-spacing: 2px 6px; align="center" border=1 bordercolor="rgba(244,7,11,1.00)" cellspacing=1 cellpadding=1 width="100%">
-<tr><caption>
-<strong>CasosDeUso</strong>
-</caption>
- 
-<thead>
-   
-      <th>Caso</th>
-      <th>Peso</th>
-   <tbody>
-       <tr>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <td>&nbsp;</td>
-         <td>&nbsp;</td>
-       </tr>
-       <tr>
-         <td>&nbsp;</td>
-         <td>&nbsp;</td>
-       </tr>
-       <tr>
-         <td>&nbsp;</td>
-         <td>&nbsp;</td>
-       </tr>
-       <tr>
-         <td>&nbsp;</td>
-         <td>&nbsp;</td>
-       </tr>
-       <tr>
-         <td>&nbsp;</td>
-         <td>&nbsp;</td>
-       </tr>
-  </tbody>
-      <tfoot>
-    <tr>
-      <td>Total</td>
-      <td></td>
-    </tr>
-  </tfoot>
-  
-</table> 
-  
-		<br></br>
-<tr></tr>
-<tr></tr>
-<table  border-collapse:separate;
-  border-spacing: 2px 6px; width="50%" height="50%" border=0 bordercolor=""align="left" cellpadding=1 cellspacing=1>
-<tr>
-    <td width="100"><table border-collapse:separate;
-  border-spacing: 100px 100px;  align="center" border=1  bordercolor=""cellspacing=1 cellpadding=1 width="100%">
-<tr><caption>
-<strong>Factores Tecnicos</strong>
-</caption>
-   <thead>
-   
-      <th>Peso</th>
-      <th>Factor</th>
-      <th>Valor Ponderado</th>
-   <tbody>
-       <tr>
-         <th scope="col">2</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <th scope="col">2</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <th scope="col">1</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <th scope="col">1</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <th scope="col">1</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <th scope="col">0.5</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <th scope="col">0.5</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <th scope="col">2</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <th scope="col">1</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <th scope="col">1</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <th scope="col">1</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <th scope="col">1</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-        <tr>
-         <th scope="col">1</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <th scope="col">1</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-     </tbody>
-      <tfoot>
-    <tr>
-      <td></td>
-      <td>Total:</td>
-    </tr>
-  </tfoot>
-  </table></td></tr></table></td>
-  
-  
-</table> 
-<table  border-collapse:separate;
-  border-spacing: 2px 6px; width="50%" height="50%" border=0 bordercolor=""align="left" cellpadding=1 cellspacing=1>
-<tr>
-    <td width="100"><table border-collapse:separate;
-  border-spacing: 100px 100px; align="center" border=1 bordercolor="rgba(244,7,11,1.00)" cellspacing=1 cellpadding=1 width="100%">
-<tr><caption>
-<strong>Factores Ambientales</strong>
-</caption>
-   <thead>
-   
-      <th>Peso</th>
-      <th>Factor</th>
-      <th>Valor Ponderado</th>
-   <tbody>
-       <tr>
-         <th scope="col">2</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <th scope="col">2</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <th scope="col">1</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <th scope="col">1</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <th scope="col">1</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <th scope="col">0.5</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <th scope="col">0.5</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <th scope="col">2</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-       <tr>
-         <th scope="col">1</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-       </tr>
-     
-      </tbody>
-      <tfoot>
-    <tr>
-      <td></td>
-      <td>Total:</td>
-    </tr>
-  </tfoot>
-  </table></td></tr></table>
-  
-</td>
-<br></br>
- <table width="100%" border="1" bordercolor="#0000FF" cellspacing="5" cellpadding="10">
- 
-<caption>
-<strong>Tabla RESULTADOS FINALES</strong>
-</caption>
-   <thead>    
-      <th>WA</th>
-      <th>WU</th>
-      <th>UUCP</th>
-      <th>TFC</th>
-      <th>Ef</th>
-      <th>HH</th>
-   <tbody>
-       <tr>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>      
-       </tr>
-       <tr>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>
-         <th scope="col">&nbsp;</th>  
-       </tr>	
-</table>
-</body>
+ </body>
 </html>
 
