@@ -224,6 +224,13 @@
           </TR>
 
      </TABLE>
+    <script type="text/javascript">
+        
+         function asd(){
+             out.println("<tr>");
+             out.println("<td>");
+         }
+     </script>
 <INPUT type="button" value="add" onclick="addRow('dataTable');" />
 <INPUT type="button" value="Delete " onclick="deleteRow('dataTable');" />
                
@@ -255,7 +262,7 @@
           </TR>
 
      </TABLE>
-<INPUT type="button" value="add" onclick="addRow1('dataTable1');" />
+<INPUT type="button" value="add" onclick="asd();" />
 <INPUT type="button" value="Delete" onclick="deleteRow1('dataTable1');" />
             </fieldset>
             <fieldset>

@@ -45,7 +45,7 @@
                             <div id="logo" align="left"><img src="imagenes/1.png" width="50" height="35" alt=""/> <label>Oliver</label></div>
                         </td>
                         <td align="right">
-                            <div align="right"><label>Bienvenido <%=nombre%></label></div>
+                        <td align="right"><form action='logout' method="post"><input type="submit" value="Cerrar Sesion" valign='center'>    <label>Bienvenido <%=nombre%></label></form></td>
                         </td>
                     </tr>
                 </tbody>
