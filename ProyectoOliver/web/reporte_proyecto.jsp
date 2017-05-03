@@ -6,21 +6,58 @@
 <head>
 <meta charset="utf-8">
 <title>Vista de proyectos</title>
-</head>
-<%
-    String pid=(String)request.getParameter("pid");
-    ResultSet nproyecto = ConexionDB.query("select nombre from proyectos where project_id='"+pid+"'");
+<%!
+    String pid;
+    ResultSet nproyecto;
+    ResultSet actores;
+%>
+    
+<jsp:scriptlet>
+    pid=(String)request.getParameter("pid");
+    
+    nproyecto = ConexionDB.query("select nombre from proyectos where project_id='"+pid+"'");
     nproyecto.first();
     String nomp = nproyecto.getString(1);
-%>
- 
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Ejemplo de tabla sencilla</title>
+    
+    actores=ConexionDB.query("select actor,complejidad,valor from actoresp where project_id='"+pid+"'");
+</jsp:scriptlet>
 </head>
  
 <body>
-    <h1> T˙ Proyecto Rut:<%=nomp%> </h1>
+    <h1>Proyecto: <%=nomp%> </h1>
+    
+    <table width="100%" border="0">
+        <tbody>
+            <tr>
+                <td>
+                    <table id="actores" width="100%" border="1">
+                        <caption><strong>Actores</strong></caption>
+                        <thead>
+                            <th align='center'>Actor</th>
+                            <th align='center'>Complejidad</th>
+                            <th align='center'>Peso</th>
+                        </thead>
+                        <tbody>
+                            <%
+                                while(actores.next()){
+                                    out.println("<tr>");
+                                    out.println("<td>"+actores.getString(1)+"</td>");
+                                    out.println("<td>"+actores.getString(2)+"</td>");
+                                    out.println("<td>"+actores.getInt(3)+"</td>");
+                                    out.println("</tr>");
+                                }
+                            %>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table id='casos' width='100%' border='1'>
+                        <caption><strong>Casos de Uso</strong></caption>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
  
 <table width="50%" height="50%" border=0 bordercolor=""align="left" cellpadding=10 cellspacing=10
  >
