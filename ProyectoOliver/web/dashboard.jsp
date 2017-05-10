@@ -234,10 +234,6 @@
             <th align="center">Peso Actores</th>
             <th align="center">Peso Casos</th>
             <th align="center">UUCP</th>
-            <th align="center">Peso FTecnico</th>
-            <th align="center">Peso FAmbiental</th>
-            <th align="center">UCP</th>
-            <th align="center">E Esfuerzo</th>
         </tr>
 </thead>
 <tbody>
@@ -249,22 +245,19 @@
                 double ucp=uucp*tcf*ef;
                 int pid=b.getInt(1);
                 out.println("<tr>");
-                out.println("<td><a href=reporte_proyecto.jsp?pid="+pid+">"+pid+"</a></td>");
+                out.println("<td><a href=reporte_proyecto.jsp?pid="+pid+" target='_blank'>"+pid+"</a></td>");
                 out.println("<td>"+b.getString(2)+"</td>");
                 out.println("<td>"+b.getString(3)+"</td>");
                 out.println("<td>"+c.getString(2)+"</td>");
                 out.println("<td>"+d.getInt(2)+"</td>");
                 out.println("<td>"+uucp+"</td>");
-                out.println("<td>"+tcf+"</td>");
-                out.println("<td>"+ef+"</td>");
-                out.println("<td>"+ucp+"</td>");
                 out.println("</tr>");
             }
         %>
         </tbody>
     </table>
         <div align="right">
-            <input type="submit" value="Nuevo Proyecto" name="Nuevo Proyecto" onclick="location='nuevo_proyecto.jsp'"/>
+            <input type="submit" value="Nuevo Proyecto" name="Nuevo Proyecto" onclick="location.href='nuevo_proyecto.jsp?user=<%=user%>&dv=<%=dv%>'"/>
         </div>
 </footer>
         <script type="text/javascript">

@@ -4,6 +4,8 @@
     Author     : brand
 --%>
 
+<%@page import="java.sql.*"%>
+<%@page import="Clases.ConexionDB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -11,65 +13,61 @@
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <SCRIPT language="javascript">
-			function cambion()
-				{
-					document.getElementById('val').value=document.getElementById('complejidad').value;
-				}
+        <%!
+            String user;
+            String dv;
+        %>
+        
+        <% 
+            user=(String)request.getParameter("user"); 
+            dv=(String)request.getParameter("dv");
+        %>
+        <script type="text/javascript">
+           var conta = 0;
+           var conta2=0;
+           var conta3=0;
+            function appendText3()
+           {
+            conta3+=1;
+            return conta3;
+            }
+            
+           function appendText2()
+           {
+            conta2+=1;
+            return conta2;
+            }
+            
+            function appendText(){
+            conta+=1;
+            return conta;
+            }
+             function cambion()
+                {
+                        document.getElementById('valor').value=document.getElementById('complejidad').value;
+                }
 		 
-          function addRow(tableID) {
-
-               var table = document.getElementById(tableID);
-               var rowCount = table.rows.length;
-               var row = table.insertRow(rowCount);
-			   
-			   var cell1 = row.insertCell(0);
-
-               var element1 = document.createElement("text");
-
-               element1.innerHTML ="Actor:<input type='text' id='actor'/>";
-               cell1.appendChild(element1);
-
-               var cell2 = row.insertCell(1);
-
-               var element2 = document.createElement("text");
-
-               element2.innerHTML="Complejidad: <select id='complejidad' onchange='cambion();'> <option value=''>Selecciona</option> <option value='1'>Simple</option> <option value='2'>Promedio</option> <option value='3'>Complejo</option> </select>";
-
-               cell1.appendChild(element2);
-			  
-			  
-			   var cell3 = row.insertCell(2);
-
-               var element3 = document.createElement("text");
-
-               element3.innerHTML ="Valor:<input type='text' id='val' readonly/>";
-
-               cell3.appendChild(element3);
-
- 
-
-               var cell4 = row.insertCell(3);
-
-               var element4 = document.createElement("input");
-
-               element4.type = "checkbox";
-
-               cell4.appendChild(element4);
-
-          }
-
- 
-
-          function deleteRow(tableID) {
+            function xxx()
+            {
+                
+                var table = document.getElementById("dataTable");
+                var row = table.insertRow(0);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3);
+                cell1.innerHTML = "Actor:<input type='text' id='act' name='actor"+appendText()+"' size='50' maxl ength='50' />";
+                cell2.innerHTML = "Complejidad: <select id='complejidad' name='complejidad"+appendText2()+"' onchange='cambion();'> <option value=''>Selecciona</option> <option value='1'>Simple</option> <option value='2'>Promedio</option> <option value='3'>Complejo</option> </select>";
+                cell3.innerHTML = "Valor:<input type='text' id='valor' name='valor"+appendText3()+"' readonly/>";
+                cell4.innerHTML = "<input type='checkbox' NAME='ckr' readonly />";
+            }
+            function deleteRow(tableID) {
 
                try {
 
                var table = document.getElementById(tableID);
 
                var rowCount = table.rows.length;
-
- 
 
                for(var i=0; i<rowCount; i++) {
 
@@ -84,78 +82,62 @@
                          rowCount--;
 
                          i--;
-
                     }
-
                }
 
-               }catch(e) {
 
+               }catch(e) 
+               {
                     alert(e);
-
                }
-          }
+            }
+        </script>
+        <script type="text/javascript">
+           var conta4= 0;
+           var conta5=0;
+           var conta6=0;
+            function appendText4()
+           {
+            conta4+=1;
+            return conta4;
+            }
+            
+           function appendText5()
+           {
+            conta5+=1;
+            return conta5;
+            }
+            
+            function appendText6(){
+            conta6+=1;
+            return conta6;
+            }
+             function cambio()
+                {
+                        document.getElementById('valo').value=document.getElementById('compleji').value;
+                }
 		 
-     </SCRIPT>
-         <SCRIPT language="javascript">
-		 function cambi()
-				{
-					document.getElementById('valo').value=document.getElementById('complejidad1').value;
-				}
-			 
-          function addRow1(tableID1) {
-
-               var table = document.getElementById(tableID1);
-               var rowCount = table.rows.length;
-               var row = table.insertRow(rowCount);
-			   
-			   var cell1 = row.insertCell(0);
-
-               var element1 = document.createElement("text");
-
-               element1.innerHTML ="Caso:<input type='text' id='Caso'/>";
-               cell1.appendChild(element1);
-
-               var cell2 = row.insertCell(1);
-
-               var element2 = document.createElement("text");
-
-               element2.innerHTML="Complejidad: <select id='complejidad1' onchange='cambi();'> <option value=''>Selecciona</option> <option value='5'>Simple</option> <option value='10'>Promedio</option> <option value='15'>Complejo</option> </select>";
-
-               cell1.appendChild(element2);
-			  
-			  
-			   var cell3 = row.insertCell(2);
-
-               var element3 = document.createElement("text");
-
-               element3.innerHTML ="Valor:<input type='text' id='valo' readonly/>";
-
-               cell3.appendChild(element3);
-
- 
-
-               var cell4 = row.insertCell(3);
-
-               var element4 = document.createElement("input");
-
-               element4.type = "checkbox";
-
-               cell4.appendChild(element4);
-
-          }
-
- 
-
-          function deleteRow1(tableID1) {
+            function xxx1()
+            {
+                
+                var table = document.getElementById("dataTable1");
+                var row = table.insertRow(0);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3);
+                cell1.innerHTML = "Caso:<input type='text' id='caso' name='caso"+appendText4()+"' size='50' maxl ength='50' />";
+                cell2.innerHTML = "Complejidad: <select id='compleji' name='compleji"+appendText5()+"' onchange='cambio();'> <option value=''>Selecciona</option> <option value='5'>Simple</option> <option value='10'>Promedio</option> <option value='15'>Complejo</option> </select>";
+                cell3.innerHTML = "Valor:<input type='text' id='valo' name='valo"+appendText6()+"' readonly/>";
+                cell4.innerHTML = "<input type='checkbox' NAME='ckr' readonly />";
+            }
+            function deleteRow1(tableID1) {
 
                try {
 
                var table = document.getElementById(tableID1);
 
                var rowCount = table.rows.length;
-
- 
 
                for(var i=0; i<rowCount; i++) {
 
@@ -170,101 +152,127 @@
                          rowCount--;
 
                          i--;
-
                     }
                }
 
-               }catch(e) {
 
+               }catch(e) 
+               {
                     alert(e);
-
                }
-
-          }
-	</SCRIPT>
+            }
+        </script>
+        <script type='text/javascript'>
+            function grabar(){
+                <%
+                    String np = request.getParameter("nombre");
+                    String desc = request.getParameter("descripcion");
+                Connection a = ConexionDB.Conectar();
+                Statement proyecto1 = a.createStatement();
+                proyecto1.executeUpdate("insert into proyectos values(NULL,'"+user+"','"+dv+"','"+np+"','"+desc+"')");
+                ResultSet proyecto2 = ConexionDB.query("select * from proyectos where jp='"+user+"' and jp_dv='"+dv+"'");
+                proyecto2.last();
+                int pid=proyecto2.getInt(1);
+                %>
+                        for(var i=0; i<document.getElementById("dataTable").rows.length -1; i++){
+                                    <%
+                                        int i=0;
+                                        String actor=request.getParameter("actor")+i;
+                                        String avaluep=request.getParameter("complejidad")+i;
+                                        String acomp;
+                                        if(avaluep.equals("1")){
+                                            acomp="Simple";
+                                        }else if(avaluep.equals("2")){
+                                            acomp="Promedio";
+                                        }else{
+                                            acomp="Complejo";
+                                        }
+                                        
+                                        Statement actores1 = a.createStatement();
+                                        
+                                        i++;
+                                    %>
+                        }             
+            }
+        </script>
     </head>
     <body>
-</form>
+        <form method="post" onsubmit="grabar()">
         <h1>Nuevo Proyecto</h1>
-        <form action="maneja_formulario.php" method="post">
             <fieldset>
               Nombre Proyecto <br/>
               <input type="text" name="nombre" id="nombre" size="50" maxlength="50" />
               <br/>
               Descripción<br/>
-              <input type="text" name="Descripción" id="Descripción" size="100" maxlength="100" />
+              <input type="text" name="descripcion" id="descripcion" size="100" maxlength="100" />
               <br/>
             </fieldset>
+            <br/>
+            <br/>
           <fieldset>
                Definicion de Actores<br/>
-             <script type="text/javascript">
-				
-				function cambio1()
-				{
-					document.getElementById('valor1').value=document.getElementById('comple').value;
-				}
-			</script>
-      
 
      <TABLE id="dataTable" width="100%" border="0">
+         <script type="text/javascript">
+         function cambi()
+                {
+                        document.getElementById('val').value=document.getElementById('comple').value;
+                }
+         </script>
 			
           <TR>
-			  <TD>Actor:<input type='text' id='Actor' /></TD>
+                <TD width="35%">Actor:<input type='text' id='Actor' name='actor0' size='50' maxlength='50'/></TD>
 
-               <TD>Complejidad:<select id='comple' onchange='cambio1();'>
-				<option value=''>Selecciona</option>
-				<option value='1'>Simple</option>
-				<option value='2'>Promedio</option>
-				<option value='3'>Complejo</option>
-				</select></TD>
-               <TD>Valor:<input type='text' id='valor1' readonly/></TD>
+               <TD width="21%">Complejidad:
+                        <select id='comple'name="complejidad0" onchange='cambi();'>
+                        <option value=''>Selecciona</option>
+                        <option value='1'>Simple</option>
+			<option value='2'>Promedio</option>
+			<option value='3'>Complejo</option>
+			</select></TD>
+               <TD width="20%">Valor:<input type='text' id='val' name="valor0" readonly/></TD>
 
-               <TD> <INPUT type="checkbox" NAME="chk" readonly /> </TD>
+               <TD width="24%"> <INPUT type="checkbox" NAME="chk" readonly /> </TD>
 
           </TR>
-
      </TABLE>
-    <script type="text/javascript">
-        
-         function asd(){
-             out.println("<tr>");
-             out.println("<td>");
-         }
-     </script>
-<INPUT type="button" value="add" onclick="addRow('dataTable');" />
+<INPUT type="button" value="add" onclick="xxx();" />
 <INPUT type="button" value="Delete " onclick="deleteRow('dataTable');" />
-               
-          </fieldset>
-            <fieldset>
-                Definicion de Casos de Uso<br/>
-              <script type="text/javascript">
-				
-				function cambio2()
-				{
-					document.getElementById('valor2').value=document.getElementById('complejidad2').value;
-				}
-			</script>
-		<TABLE id="dataTable1" width="100%" border="0">
-			
-          <TR>
-			  <TD>Caso:<input type='text' id='caso' /></TD>
 
-               <TD>Complejidad:<select id='complejidad2' onchange='cambio2();'>
+          </fieldset>
+            <br/>
+            <br/>
+          <fieldset>
+                Definicion de Casos de Uso<br/>
+            
+	<TABLE id="dataTable1" width="100%" border="0">
+        <script type="text/javascript">
+	 function camb()
+                {
+                        document.getElementById('v').value=document.getElementById('com').value;
+                }
+         </script>		
+          <TR>
+                <TD width="35%">Caso:<input type='text' id='caso' name="caso0" size='50' maxlength='50'/></TD>
+
+               <TD width="21%">Complejidad:<select id='com' name='compleji0' onchange='camb();'>
 				<option value=''>Selecciona</option>
 				<option value='5'>Simple</option>
 				<option value='10'>Promedio</option>
 				<option value='15'>Complejo</option>
 				</select></TD>
-               <TD>Valor:<input type='text' id='valor2' readonly/></TD>
+               <TD width="20%">Valor:<input type='text' id='v' name='valo0' readonly/></TD>
 
-               <TD> <INPUT type="checkbox" NAME="chk" readonly /> </TD>
+               <TD width="24%"> <INPUT type='checkbox' NAME='chk' readonly /> </TD>
 
           </TR>
 
      </TABLE>
-<INPUT type="button" value="add" onclick="asd();" />
+<INPUT type="button" value="add" onclick="xxx1();" />
 <INPUT type="button" value="Delete" onclick="deleteRow1('dataTable1');" />
-            </fieldset>
+          </fieldset>
+            <br/>
+            <br/>
             <fieldset>
 			<table width="100%" border="1">
 			  <tbody>
@@ -355,6 +363,8 @@
 			  </tbody>
 			</table>
 			</fieldset>
+                <br/>
+                <br/>
         	<fieldset>
         	<table width="100%" border="1">
 			  <tbody>
@@ -415,6 +425,8 @@
 			  </tbody>
 			</table>
          	</fieldset>
-		</form>
+                <br>
+                <p align="right"><input type='submit' name='guardar' value='GUARDAR'/></p>
+	</form>
     </body>
 </html>

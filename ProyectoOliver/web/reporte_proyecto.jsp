@@ -17,6 +17,11 @@
     int tcus=0;
     float tft=0;
     float tfa=0;
+    double tcf=0;
+    double ef=0;
+    int uucp;
+    double ucp;
+    double hh;
 %>
     
 <jsp:scriptlet>
@@ -30,6 +35,9 @@
     casos=ConexionDB.query("select caso,complejidad,valor from casosp where project_id='"+pid+"'");
     ftecnicos=ConexionDB.query("select a.idft,a.descripcion,a.peso,b.factor from ftecnico a inner join ftecnicop b on a.idft=b.idft where b.project_id='"+pid+"'");
     fambientales=ConexionDB.query("select a.idfa,a.descripcion,a.peso,b.factor from fambiental a inner join fambientalp b on a.idfa=b.idfa where b.project_id='"+pid+"'");
+    
+    tcf=0.6+(0.01*tft);
+    ef=1.4+(-0.3*tfa);
 </jsp:scriptlet>
 </head>
  
@@ -156,6 +164,34 @@
             </tr>
         </tbody>
     </table>
+     <table id="tabla resultados" width="100%"border="1">
+          <caption><strong>Tabla de Resultados</strong></caption>
+                  <thead>
+                            <th align="center">Wa(Peso Actores)</th>
+                            <th align="center">Wu (Peso Casos de Uso)</th>
+                            <th align="center">UUCP(Puntos de CU no ajustados)</th>
+                            <th align="center">TCF(Factor Tecnico Ponderado)</th>
+                            <th align="center">EF(Factor Ambiental Ponderado)</th>
+                            <th align="center">UCP(Puntos de CU ajustados</th>
+                            <th align="center">HH(Hora Hombre)</th>
+                        </thead>
+                        <tbody>
+                            <%      int uucp=(tact)+(tcus);
+                                    double ucp=(uucp)*(tcf)*(ef);
+                                    double hh=(ucp)*20;
+                                    out.println("<td>"+tact+"</td>");
+                                    out.println("<td>"+tcus+"</td>");
+                                    out.println("<td>"+uucp+"</td>");
+                                    out.println("<td>"+tcf+"</td>");
+                                    out.println("<td>"+ef+"</td>");
+                                    out.println("<td>"+ucp+"</td>");
+                                    out.println("<td>"+hh+"</td>");
+                             %>
+                            </tbody>
+                      </table>  
+                           
+    
+                           
  </body>
-</html>
 
+</html>
